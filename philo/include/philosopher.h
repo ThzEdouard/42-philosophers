@@ -6,7 +6,7 @@
 /*   By: eflaquet <eflaquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:11:15 by eflaquet          #+#    #+#             */
-/*   Updated: 2022/09/21 17:39:44 by eflaquet         ###   ########.fr       */
+/*   Updated: 2022/09/21 19:07:54 by eflaquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,5 @@ typedef struct s_arg
 unsigned int	u_atoi(const char *arg);
 // funtion for struct
 int		creating_philo(t_arg *arg);
-
+void	free_philo(t_arg *arg);
 #endif

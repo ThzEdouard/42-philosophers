@@ -6,11 +6,24 @@
 /*   By: eflaquet <eflaquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:29:08 by eflaquet          #+#    #+#             */
-/*   Updated: 2022/09/21 15:33:47 by eflaquet         ###   ########.fr       */
+/*   Updated: 2022/09/21 19:19:45 by eflaquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosopher.h"
+
+void	free_philo(t_arg *arg)
+{
+	int	i;
+
+	i = 2;
+	while (i)
+	{
+		free(arg->philo);
+		i--;
+	}
+	//free(arg->philo);
+}
 
 unsigned int	u_atoi(const char *arg)
 {

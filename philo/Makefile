@@ -9,7 +9,7 @@ OBJ = $(FILE:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-			$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+			$(CC) $(CFLAGS) -pthread -o $(NAME) $(OBJ)
 
 clean:
 			$(RM) -rf $(OBJ)

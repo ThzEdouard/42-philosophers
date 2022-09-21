@@ -6,11 +6,13 @@
 /*   By: eflaquet <eflaquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:12:35 by eflaquet          #+#    #+#             */
-/*   Updated: 2022/09/21 14:12:50 by eflaquet         ###   ########.fr       */
+/*   Updated: 2022/09/21 14:25:26 by eflaquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/philosopher.h"
+
 int	main(int argc, char **argv)
 {
-	
+
 }

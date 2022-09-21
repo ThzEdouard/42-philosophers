@@ -6,7 +6,7 @@
 /*   By: eflaquet <eflaquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:12:35 by eflaquet          #+#    #+#             */
-/*   Updated: 2022/09/21 19:17:25 by eflaquet         ###   ########.fr       */
+/*   Updated: 2022/09/22 00:21:41 by eflaquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int	main(int argc, char **argv)
 		if (argc == 6)
 			arg.number_of_times_each_philosopher_must_eat = u_atoi(argv[5]);
 		creating_philo(&arg);
-		free_philo(&arg);
+		sleep(3);
+		//delete_philo(&arg);
 	}
 	else
 		printf("use ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep "

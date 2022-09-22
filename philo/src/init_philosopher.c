@@ -6,7 +6,7 @@
 /*   By: eflaquet <eflaquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:22:38 by eflaquet          #+#    #+#             */
-/*   Updated: 2022/09/22 00:39:31 by eflaquet         ###   ########.fr       */
+/*   Updated: 2022/09/22 12:21:23 by eflaquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,46 @@ static void	*task(void *p)
 {
 	t_arg	*arg = (t_arg *)p;
 	pthread_mutex_lock(&(arg)->lock);
-	printf("%d\n", arg->number_of_philosophers--);
+
 	pthread_mutex_unlock(&(arg)->lock);
 	return (NULL);
+}
+
+static t_arg	*init_philo(t_arg *arg, int x)
+{
+	int	i;
+
+	i = 0;
+	while (i < arg->number_of_philosophers)
+	{
+		arg->philo[i].pid = x;
+		arg->philo[i].die = UNLOCK;
+		arg->philo[i].fork.pid = x;
+		arg->philo[i].fork.pid_loking = UNLOCK;
+		arg->philo[i].fork.loking = UNLOCK;
+		arg->philo[i].eat = UNLOCK;
+		arg->philo[i].sleep = UNLOCK;
+		i++;
+		x++;
+	}
+
+	return (arg);
 }
 
 int		creating_philo(t_arg *arg)
 {
 	int	i;
-	int	x;
 
-	x = 1;
 	i = 0;
 	arg->philo = malloc(sizeof(t_philosopher) * (arg->number_of_philosophers + 1));
 	if (!arg->philo)
 		return (1);
+	arg = init_philo(arg, 1);
 	pthread_mutex_init(&arg->lock, NULL);
 	while (i < arg->number_of_philosophers)
 	{
-		arg->philo[i].pid = x;
-		arg->philo[i].die = UNLOCK;
 		pthread_create(&arg->philo[i].thread_philo, NULL, task, arg);
 		i++;
-		x++;
 	}
 	return (0);
 }

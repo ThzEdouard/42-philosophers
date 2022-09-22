@@ -6,7 +6,7 @@
 /*   By: eflaquet <eflaquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:12:35 by eflaquet          #+#    #+#             */
-/*   Updated: 2022/09/22 00:21:41 by eflaquet         ###   ########.fr       */
+/*   Updated: 2022/09/22 12:22:16 by eflaquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ int	main(int argc, char **argv)
 		arg.time_to_sleep = u_atoi(argv[4]);
 		if (argc == 6)
 			arg.number_of_times_each_philosopher_must_eat = u_atoi(argv[5]);
+		arg.timer = 0;
 		creating_philo(&arg);
-		sleep(3);
+		sleep(1);
 		//delete_philo(&arg);
 	}
 	else

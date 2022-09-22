@@ -1,5 +1,5 @@
 NAME	= philo
-FILE = src/main.c src/util.c src/init_philosopher.c
+FILE = src/main.c src/util.c src/init_philosopher.c src/action_philo.c src/view_philo.c
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -rfv

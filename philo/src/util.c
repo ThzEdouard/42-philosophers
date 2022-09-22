@@ -6,7 +6,7 @@
 /*   By: eflaquet <eflaquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:29:08 by eflaquet          #+#    #+#             */
-/*   Updated: 2022/09/21 22:44:52 by eflaquet         ###   ########.fr       */
+/*   Updated: 2022/09/22 18:47:44 by eflaquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,14 @@ unsigned int	u_atoi(const char *arg)
 	while (*arg >= 48 && *arg <= 57)
 		x = x * 10 + *arg++ - '0';
 	return (x);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }

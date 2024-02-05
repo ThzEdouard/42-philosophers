@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eflaquet <eflaquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/21 15:29:08 by eflaquet          #+#    #+#             */
-/*   Updated: 2022/09/22 18:47:44 by eflaquet         ###   ########.fr       */
+/*   Created: 2022/10/04 10:08:17 by eflaquet          #+#    #+#             */
+/*   Updated: 2022/10/05 11:16:23 by eflaquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,32 @@ unsigned int	u_atoi(const char *arg)
 	return (x);
 }
 
-int	ft_strcmp(char *s1, char *s2)
+int	lock_dead(t_arg *arg)
 {
-	int	i;
+	int	r;
 
-	i = 0;
-	while (s1[i] && s1[i] == s2[i])
-		i++;
-	return (s1[i] - s2[i]);
+	pthread_mutex_lock(&(arg->dead));
+	r = arg->i;
+	pthread_mutex_unlock(&(arg->dead));
+	return (r);
+}
+
+int	lock_eat(t_arg *arg)
+{
+	int	r;
+
+	pthread_mutex_lock(&(arg->eating));
+	r = arg->nb_eat;
+	pthread_mutex_unlock(&(arg->eating));
+	return (r);
+}
+
+long	lock_time_eating(t_arg *arg, int i)
+{
+	long	r;
+
+	pthread_mutex_lock(&(arg->eating));
+	r = arg->philo[i].time_eating;
+	pthread_mutex_unlock(&(arg->eating));
+	return (r);
 }

@@ -1,7 +1,9 @@
 NAME	= philo
-FILE = src/main.c src/util.c src/init_philosopher.c src/action_philo.c src/view_philo.c
+FILE = src/main.c src/init_philosopher.c	\
+		src/creating_philosopher.c src/acting_philosopher.c \
+		src/utils.c
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 RM = rm -rfv
 
 OBJ = $(FILE:.c=.o)

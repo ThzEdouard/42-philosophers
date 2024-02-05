@@ -5,99 +5,76 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eflaquet <eflaquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/21 15:22:38 by eflaquet          #+#    #+#             */
-/*   Updated: 2022/09/22 23:57:07 by eflaquet         ###   ########.fr       */
+/*   Created: 2022/10/04 10:01:39 by eflaquet          #+#    #+#             */
+/*   Updated: 2022/10/05 11:48:02 by eflaquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosopher.h"
 
-int	u = 0;
-
-static void	*task(void *p)
-{
-	t_arg	*arg = (t_arg *)p;
-	while (1)
-	{
-
-	}
-	routine(arg);
-	return (NULL);
-}
-
-static t_arg	*init_philo(t_arg *arg)
+static void	malloc_fork(t_arg **arg, int size)
 {
 	int	i;
 
 	i = 0;
-	while (i < arg->number_of_philosophers)
+	(*arg)->lock_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
+			* (size + 1));
+	if (!(*arg)->lock_fork)
+		return ;
+	while (i < (*arg)->nb_philosophers)
 	{
-		arg->philo[i].pid = i + 1;
-		arg->philo[i].die = UNLOCK;
-		arg->philo[i].eat = UNLOCK;
-		arg->philo[i].sleep = UNLOCK;
-		arg->philo[i].fork_left = i + 1;
-		if (i )
-		arg->philo[i].fork_righ = i;
+		pthread_mutex_init(&((*arg)->lock_fork[i]), NULL);
 		i++;
 	}
-	return (arg);
 }
 
-int		creating_philo(t_arg *arg)
+static void	malloc_philosopher(t_arg **arg, int size)
 {
 	int	i;
 
 	i = 0;
-	arg->philo = malloc(sizeof(t_philosopher) * (arg->number_of_philosophers + 1));
-	if (!arg->philo)
-		return (1);
-	arg = init_philo(arg, 1);
-	pthread_mutex_init(&(arg->talking), NULL);
-	arg->lock_fork = malloc(sizeof(pthread_mutex_t) * (arg->number_of_philosophers + 1));
-	if (!arg->lock_fork)
-		return (1);
-	while (i < arg->number_of_philosophers)
+	(*arg)->philo = (t_philosopher *) malloc(sizeof(t_philosopher)
+			* (size + 1));
+	if (!(*arg)->philo)
+		return ;
+	while (i < (*arg)->nb_philosophers)
 	{
-		pthread_mutex_init(&(arg->lock_fork[i]), NULL);
+		(*arg)->philo[i].pid = i + 1;
+		(*arg)->philo[i].fork_left = i;
+		(*arg)->philo[i].fork_right = (i + 1) % (*arg)->nb_philosophers;
+		(*arg)->philo[i].arg = (*arg);
+		(*arg)->philo[i].nb_eat = 0;
+		(*arg)->philo[i].time_eating = 0;
+		pthread_mutex_init(&((*arg)->philo[i].eating), NULL);
 		i++;
 	}
-	i = 0;
-	while (i < arg->number_of_philosophers)
-	{
-		arg->philo[i].arg = arg;
-		pthread_create(&arg->philo[i].thread_philo, NULL, task, &arg->philo[i]);
-		//sleep(1);
-		i++;
-	}
-	return (0);
 }
 
-// int	die_philo(t_arg *arg, int pid)
-// {
-// 	int	i;
+void	init_philosopher(t_arg *arg, char **argv, int argc)
+{
+	arg->nb_philosophers = u_atoi(argv[1]);
+	arg->time_to_die = u_atoi(argv[2]);
+	arg->time_to_eat = u_atoi(argv[3]);
+	arg->time_to_sleep = u_atoi(argv[4]);
+	arg->i = 1;
+	arg->start = get_times();
+	arg->number_of_times_each_philosopher_must_eat = -1;
+	arg->nb_eat = 0;
+	if (argc == 6)
+		arg->number_of_times_each_philosopher_must_eat = u_atoi(argv[5]);
+	arg->philo = NULL;
+	arg->lock_fork = NULL;
+	pthread_mutex_init(&(arg->writing), NULL);
+	pthread_mutex_init(&(arg->eating), NULL);
+	pthread_mutex_init(&(arg->dead), NULL);
+	malloc_philosopher(&arg, arg->nb_philosophers);
+	malloc_fork(&arg, arg->nb_philosophers);
+}
 
-// 	i = 0;
-// 	while (arg->philo[i].pid != pid)
-// 		i++;
-// 	printf("mort %d philo\n", arg->philo[i].pid);
-// 	arg->philo[i].die = LOCK;
-// 	return (0);
-// }
-
-// int	delete_philo(t_arg *arg)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < arg->number_of_philosophers)
-// 	{
-// 		pthread_join(arg->philo[i].thread_philo, NULL);
-// 		pthread_mutex_destroy(&arg->philo[i].lock);
-// 		pthread_mutex_destroy(&arg->philo[i].fork.lock);
-// 		i++;
-// 	}
-// 	pthread_mutex_destroy(&arg->lock);
-// 	free(arg->philo);
-// 	return (0);
-// }
+void	free_philosopher(t_arg *arg)
+{
+	if (arg->philo)
+		free(arg->philo);
+	if (arg->lock_fork)
+		free(arg->lock_fork);
+}
